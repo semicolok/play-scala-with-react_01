@@ -13,6 +13,27 @@ import play.api.mvc.{Action, Controller}
 @Singleton
 class BoardController extends Controller{
 
+  private[this] val JsonContentType = "application/json; charset=utf-8"
+
+  private[this] lazy val boardForm = Form(
+    mapping(
+      "title" -> nonEmptyText(maxLength = 20),
+      "content" -> nonEmptyText,
+      "writer" -> nonEmptyText
+    )(BoardForm.apply)(BoardForm.unapply)
+  )
+
+  implicit val boardWrites = new Writes[Board] {
+    def writes(board: Board) = Json.obj(
+      "id" -> board.id,
+      "title" -> board.title,
+      "content" -> board.content,
+      "writer" -> board.writer,
+      "createdAt" -> board.createdAt,
+      "updatedAt" -> board.updatedAt
+    )
+  }
+
   def index = Action {
     Ok(views.html.index.render())
   }
@@ -30,24 +51,8 @@ class BoardController extends Controller{
     Ok
   }
 
-  private[this] lazy val boardForm = Form(
-    mapping(
-      "title" -> nonEmptyText(maxLength = 20),
-      "content" -> nonEmptyText,
-      "writer" -> nonEmptyText
-    )(BoardForm.apply)(BoardForm.unapply)
-  )
-
-  implicit val tweetWrites = new Writes[Board] {
-    def writes(board: Board) = Json.obj(
-      "id" -> board.id,
-      "title" -> board.title,
-      "content" -> board.content,
-      "writer" -> board.writer,
-      "createdAt" -> board.createdAt,
-      "updatedAt" -> board.updatedAt
-    )
+  def delete(boardId: Long) = Action {
+    Board.deleteById(boardId)
+    Ok
   }
-
-  private[this] val JsonContentType = "application/json; charset=utf-8"
 }

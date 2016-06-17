@@ -5,6 +5,7 @@
 GET        /                    controllers.BoardController.index
 GET /boards controllers.BoardController.getBoards
 POST /boards controllers.BoardController.addBoard
+DELETE /boards/:boardId controllers.BoardController.delete(boardId: Long)
 
 
 

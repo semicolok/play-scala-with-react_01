@@ -43,6 +43,20 @@ export default class Board extends Component {
     });
   }
 
+  deleteBoard(boardId) {
+    $.ajax({
+      url: '/boards/' + boardId,
+      method: "DELETE",
+      cache: false,
+      success: function (data) {
+        this.loadBoardFromServer();
+      }.bind(this),
+      error: function (xhr, status, err) {
+        this.loadBoardFromServer();
+      }.bind(this)
+    });
+  }
+
   render() {
     return (
       <div className="container">
@@ -53,7 +67,7 @@ export default class Board extends Component {
           <BoardForm saveCallBack={this.saveBoard.bind(this)}/>
         </div>
         <div className="row marketing">
-          <BoardList boardList={this.state.boards}/> <br />
+          <BoardList deleteCallBack={this.deleteBoard.bind(this)} boardList={this.state.boards}/> <br />
         </div>
         <footer className="footer">
           <p>&copy; FOOTER</p>
