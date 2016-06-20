@@ -2,19 +2,20 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /                    controllers.BoardController.index
-GET /boards controllers.BoardController.getBoards
-POST /boards controllers.BoardController.addBoard
-DELETE /boards/:boardId controllers.BoardController.delete(boardId: Long)
+GET           /                       controllers.BoardController.index
+GET           /boards                 controllers.BoardController.getBoards(page: Option[Int], size: Option[Int])
+GET           /boards/paged           controllers.BoardController.getPagedBoards(page: Option[Int], size: Option[Int])
+POST          /boards                 controllers.BoardController.addBoard
+DELETE        /boards/:boardId        controllers.BoardController.delete(boardId: Long)
 
 
 
 # An example controller showing a sample home page
-GET        /home                controllers.HomeController.index
+GET           /home                   controllers.HomeController.index
 # An example controller showing how to use dependency injection
-GET        /count               controllers.CountController.count
+GET           /count                  controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET        /message             controllers.AsyncController.message
+GET           /message                controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
